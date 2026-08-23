@@ -1,0 +1,492 @@
+:root {
+  /* Color tokens — concrete & blueprint, not RepMax's cream/terracotta */
+  --bg: #e9eae6;            /* soft concrete grey background */
+  --surface: #ffffff;       /* white cards */
+  --surface-muted: #f4f5f2; /* subtle inset surfaces (input fields, tags) */
+  --ink: #1e2226;           /* near-black slate, primary text */
+  --ink-muted: #666f76;     /* muted text */
+  --blue: #2f5da6;          /* blueprint blue, primary accent */
+  --blue-dark: #1f3f73;
+  --blue-tint: #e7edf6;     /* pale blue for badges/highlights */
+  --rust: #c1440e;          /* sparing use — warnings only */
+  --line: rgba(30, 34, 38, 0.1);
+  --shadow-sm: 0 1px 2px rgba(30, 34, 38, 0.06), 0 1px 1px rgba(30, 34, 38, 0.04);
+  --shadow-md: 0 4px 14px rgba(30, 34, 38, 0.08), 0 1px 3px rgba(30, 34, 38, 0.06);
+  --radius: 16px;
+  --radius-sm: 10px;
+
+  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono-tape), "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--blue);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--blue-dark);
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Site header */
+.site-header {
+  background-color: var(--bg);
+}
+
+.site-header-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 20px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.logo-mark {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  background: var(--blue);
+  border-radius: 4px;
+  transform: rotate(45deg);
+}
+
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Homepage hero */
+.hero {
+  padding: 40px 0 32px;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  max-width: 11ch;
+}
+
+.hero p {
+  margin-top: 16px;
+  max-width: 52ch;
+  color: var(--ink-muted);
+  font-size: 1.05rem;
+}
+
+/* Calculator grid on homepage */
+.calc-grid {
+  padding: 16px 0 64px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.calc-card {
+  display: block;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  text-decoration: none;
+  color: var(--ink);
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.calc-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.calc-card-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.calc-card-arrow {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: var(--font-mono);
+  color: var(--ink-muted);
+}
+
+/* Calculator page */
+.breadcrumb {
+  padding-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.calc-page-header {
+  padding: 16px 0 28px;
+}
+
+.calc-category {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  background: var(--blue-tint);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.calc-page-header h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+  margin-top: 12px;
+}
+
+.calc-intro {
+  margin-top: 14px;
+  max-width: 62ch;
+  color: var(--ink-muted);
+}
+
+/* The calculator card itself */
+.calc-tool {
+  margin: 28px 0;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.calc-tool-header {
+  background: var(--blue);
+  color: #fff;
+  padding: 14px 22px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calc-form {
+  padding: 24px 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.field-row label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+}
+
+.field-input-wrap {
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1.5px solid transparent;
+  transition: border-color 0.12s ease;
+}
+
+.field-input-wrap:focus-within {
+  border-color: var(--blue);
+}
+
+.field-input-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: var(--ink);
+  min-width: 0;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.field-input-wrap input:focus {
+  outline: none;
+}
+
+.field-unit {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  background: var(--line);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.calc-submit {
+  justify-self: start;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 1rem;
+  padding: 13px 30px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.calc-submit:hover {
+  background: var(--blue-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.calc-hint {
+  margin: 0 22px 22px;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+/* Result — hero treatment, like RepMax's big number */
+.result-tag {
+  margin: 0 22px 24px;
+  border-radius: var(--radius);
+  background: var(--blue-tint);
+  padding: 22px;
+}
+
+.result-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--blue-dark);
+}
+
+.result-headline {
+  font-family: var(--font-mono);
+  font-size: clamp(2rem, 7vw, 2.9rem);
+  font-weight: 700;
+  margin-top: 6px;
+  color: var(--ink);
+}
+
+.result-sub {
+  margin-top: 10px;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  max-width: 60ch;
+}
+
+.result-breakdown {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(47, 93, 166, 0.15);
+  display: grid;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.result-breakdown div {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-muted);
+}
+
+.result-breakdown strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Info + FAQ sections */
+.section-title {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+
+.info-block {
+  padding: 24px 0;
+}
+
+.info-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.info-item {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 18px;
+}
+
+.info-item h3 {
+  font-family: var(--font-body);
+  text-transform: none;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.info-item p {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+}
+
+.faq-block {
+  padding: 24px 0;
+}
+
+.faq-item {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.faq-item h3 {
+  font-family: var(--font-body);
+  text-transform: none;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.faq-item p {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+}
+
+.related-block {
+  padding: 12px 0 56px;
+}
+
+.related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.related-links a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  border-radius: 999px;
+  padding: 9px 16px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.related-links a:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+.site-footer {
+  padding: 24px 0 40px;
+}
+
+.disclaimer {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  max-width: 62ch;
+}
+
+.copyright {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+@media (min-width: 560px) {
+  .field-row {
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

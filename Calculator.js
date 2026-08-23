@@ -51,32 +51,23 @@ export default function Calculator({ calc }) {
       {result && (
         <div className="result-tag">
           <span className="result-label">You&apos;ll need about</span>
-          <div className="result-headline">{result.cuYards.toFixed(2)} cu yd</div>
-          <p className="result-sub">
-            That&apos;s roughly {result.bags} bags at {calc.cuFtPerBag} cu ft
-            each, or about {result.tons.toFixed(2)} tons if you&apos;re
-            ordering bulk. Includes a {Math.round(calc.wasteFactor * 100)}%
-            waste allowance.
-          </p>
+          <div className="result-headline">{result.headline}</div>
+          <p className="result-sub">{result.subCopy}</p>
           <div className="result-breakdown">
-            <div>
-              <span>Area</span>
-              <strong>{result.areaSqFt.toFixed(1)} sq ft</strong>
-            </div>
-            <div>
-              <span>Volume (before waste)</span>
-              <strong>{result.volumeCuFt.toFixed(1)} cu ft</strong>
-            </div>
-            <div>
-              <span>Bags needed</span>
-              <strong>{result.bags}</strong>
-            </div>
-            <div>
-              <span>Bulk weight</span>
-              <strong>~{result.tons.toFixed(2)} tons</strong>
-            </div>
+            {result.breakdown.map((row) => (
+              <div key={row.label}>
+                <span>{row.label}</span>
+                <strong>{row.value}</strong>
+              </div>
+            ))}
           </div>
         </div>
+      )}
+
+      {values && Object.keys(values).length > 0 && result === null && (
+        <p className="calc-hint" role="status">
+          Fill in every field above to see your estimate.
+        </p>
       )}
     </div>
   );
