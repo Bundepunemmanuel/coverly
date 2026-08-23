@@ -1,7 +1,7 @@
 import { calculators } from "../data";
 
 // Update this once you have the real domain.
-const SITE_URL = "https://coverly.vercel.app";
+const SITE_URL = "https://coverly-com.vercel.app";
 
 export default function sitemap() {
   const staticRoutes = [
