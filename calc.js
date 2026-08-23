@@ -1,8 +1,6 @@
-// Each calculator declares a `formula` type in data.js. Add a new formula
-// type here when a calculator's math doesn't fit the existing shapes.
-// Every compute function returns the same shape so Calculator.js can
-// render any of them generically:
-//   { headline, subCopy, breakdown: [{ label, value }] }
+// Each calculator declares a `formula` type in data.js. Every compute
+// function returns the same shape so Calculator.js can render any of
+// them generically: { headline, subCopy, breakdown: [{ label, value }] }
 
 function computeAreaDepth(calc, v) {
   const length = parseFloat(v.length);
@@ -94,7 +92,6 @@ function computePaint(calc, v) {
   const { coveragePerGallon } = calc.params;
   const areaSqFt = Math.max(perimeter * height - openings, 0);
   const totalCoverage = areaSqFt * coats;
-  // round up to the nearest quart (0.25 gal), the usual purchase increment
   const gallonsRaw = totalCoverage / coveragePerGallon;
   const gallons = Math.ceil(gallonsRaw / 0.25) * 0.25;
 
@@ -110,11 +107,113 @@ function computePaint(calc, v) {
   };
 }
 
+function computeSod(calc, v) {
+  const length = parseFloat(v.length);
+  const width = parseFloat(v.width);
+  if (!length || !width || length <= 0 || width <= 0) {
+    return null;
+  }
+
+  const { wasteFactor, sqFtPerPallet } = calc.params;
+  const areaSqFt = length * width;
+  const withWaste = areaSqFt * (1 + wasteFactor);
+  const pallets = Math.ceil(withWaste / sqFtPerPallet);
+
+  return {
+    headline: `${Math.round(withWaste)} sq ft`,
+    subCopy: `That's about ${pallets} standard pallet${pallets === 1 ? "" : "s"} of sod at roughly ${sqFtPerPallet} sq ft per pallet. Includes a ${Math.round(wasteFactor * 100)}% allowance for cutting and fitting around edges.`,
+    breakdown: [
+      { label: "Yard area", value: `${areaSqFt.toFixed(0)} sq ft` },
+      { label: "Area with waste", value: `${withWaste.toFixed(0)} sq ft` },
+      { label: "Pallets needed", value: pallets },
+      { label: "Coverage per pallet", value: `${sqFtPerPallet} sq ft` },
+    ],
+  };
+}
+
+function computePineStraw(calc, v) {
+  const length = parseFloat(v.length);
+  const width = parseFloat(v.width);
+  if (!length || !width || length <= 0 || width <= 0) {
+    return null;
+  }
+
+  const { wasteFactor, sqFtPerBale } = calc.params;
+  const areaSqFt = length * width;
+  const withWaste = areaSqFt * (1 + wasteFactor);
+  const bales = Math.ceil(withWaste / sqFtPerBale);
+
+  return {
+    headline: `${bales} bales`,
+    subCopy: `Covers about ${areaSqFt.toFixed(0)} sq ft at a standard spread thickness, using roughly ${sqFtPerBale} sq ft per bale. Includes a ${Math.round(wasteFactor * 100)}% waste allowance.`,
+    breakdown: [
+      { label: "Area", value: `${areaSqFt.toFixed(0)} sq ft` },
+      { label: "Area with waste", value: `${withWaste.toFixed(0)} sq ft` },
+      { label: "Bales needed", value: bales },
+      { label: "Coverage per bale", value: `${sqFtPerBale} sq ft` },
+    ],
+  };
+}
+
+function computeDeckStain(calc, v) {
+  const length = parseFloat(v.length);
+  const width = parseFloat(v.width);
+  const coats = parseFloat(v.coats) || calc.params.defaultCoats;
+  if (!length || !width || length <= 0 || width <= 0) {
+    return null;
+  }
+
+  const { coveragePerGallon } = calc.params;
+  const areaSqFt = length * width;
+  const totalCoverage = areaSqFt * coats;
+  const gallonsRaw = totalCoverage / coveragePerGallon;
+  const gallons = Math.ceil(gallonsRaw / 0.25) * 0.25;
+
+  return {
+    headline: `${gallons} gal`,
+    subCopy: `Covers ${areaSqFt.toFixed(0)} sq ft at ${coats} coat${coats === 1 ? "" : "s"}, using a ${coveragePerGallon} sq ft/gallon coverage rate typical for stain on wood decking.`,
+    breakdown: [
+      { label: "Deck area", value: `${areaSqFt.toFixed(0)} sq ft` },
+      { label: "Total coverage needed", value: `${totalCoverage.toFixed(0)} sq ft` },
+      { label: "Coats", value: coats },
+      { label: "Gallons needed", value: gallons },
+    ],
+  };
+}
+
+function computeFlooring(calc, v) {
+  const length = parseFloat(v.length);
+  const width = parseFloat(v.width);
+  if (!length || !width || length <= 0 || width <= 0) {
+    return null;
+  }
+
+  const { wasteFactor, sqFtPerBox } = calc.params;
+  const areaSqFt = length * width;
+  const withWaste = areaSqFt * (1 + wasteFactor);
+  const boxes = Math.ceil(withWaste / sqFtPerBox);
+
+  return {
+    headline: `${boxes} boxes`,
+    subCopy: `Covers about ${areaSqFt.toFixed(0)} sq ft using boxes that cover roughly ${sqFtPerBox} sq ft each. Includes a ${Math.round(wasteFactor * 100)}% waste allowance — bump that up for diagonal or herringbone layouts.`,
+    breakdown: [
+      { label: "Room area", value: `${areaSqFt.toFixed(0)} sq ft` },
+      { label: "Area with waste", value: `${withWaste.toFixed(0)} sq ft` },
+      { label: "Boxes needed", value: boxes },
+      { label: "Coverage per box", value: `${sqFtPerBox} sq ft` },
+    ],
+  };
+}
+
 const FORMULAS = {
   "area-depth": computeAreaDepth,
   "wall-area": computeWallArea,
   fence: computeFence,
   paint: computePaint,
+  sod: computeSod,
+  "pine-straw": computePineStraw,
+  "deck-stain": computeDeckStain,
+  flooring: computeFlooring,
 };
 
 export function computeResult(calc, values) {
